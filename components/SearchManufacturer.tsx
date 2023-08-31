@@ -1,6 +1,7 @@
 "use client";
 import { Combobox, Transition } from "@headlessui/react";
 import Image from "next/image";
+import { useState } from "react";
 
 import { SearchManufacturerProps } from "@/types";
 
@@ -8,6 +9,8 @@ const SearchManufacturer = ({
   manufacturer,
   setManufacturer,
 }: SearchManufacturerProps) => {
+  const [query, setQuery] = useState("");
+
   return (
     <div className="search-manufacturer">
       <Combobox>
@@ -21,6 +24,13 @@ const SearchManufacturer = ({
               alt="Car logo"
             />
           </Combobox.Button>
+
+          <Combobox.Input
+            className="search-manufacturer__input"
+            placeholder="Volkswagon"
+            displayValue={(manufacturer: string) => manufacturer}
+            onChange={(e) => setQuery(e.target.value)}
+          />
         </div>
       </Combobox>
     </div>
