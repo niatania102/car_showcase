@@ -4,7 +4,6 @@ import Image from "next/image";
 
 export default async function Home() {
   const allCars = await fetchCars(); // if you console.log then it's gonna be shown in the vscode terminal (server side component)
-  console.log(allCars);
 
   const isDataEmpty = !Array.isArray(allCars) || allCars.length < 1 || !allCars;
   return (
