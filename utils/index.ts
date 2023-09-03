@@ -1,16 +1,20 @@
+import { CarProps } from "@/types";
+
 export async function fetchCars() {
   const headers = {
-    "X-RapidAPI-Key": "5e814f8991mshcba74386f83df99p168c59jsn20826298910f",
+    "X-RapidAPI-Key": process.env.NEXT_PUBLIC_RAPID_API_KEY || "",
     "X-RapidAPI-Host": "cars-by-api-ninjas.p.rapidapi.com",
   };
 
-  //   default is GET request
+  // Set the required headers for the API request,  default is GET request
   const response = await fetch(
-    "https://cars-by-api-ninjas.p.rapidapi.com/v1/cars?model=carrera",
+    `https://cars-by-api-ninjas.p.rapidapi.com/v1/cars?model=q3`,
     { headers: headers }
   );
 
+  // Parse the response as JSON
   const result = await response.json();
+
   return result;
 }
 
@@ -27,4 +31,22 @@ export const calculateCarRentalPrice = (city_mpg: number, year: number) => {
   const rentalRatePerDay = basePricePerDay + milageRate * ageFactor;
 
   return rentalRatePerDay.toFixed(0);
+};
+
+export const generateCarImageUrl = (car: CarProps, angle?: string) => {
+  const url = new URL("https://cdn.imagin.studio/getimage");
+
+  const { make, year, model } = car;
+  url.searchParams.append(
+    "customer",
+    process.env.NEXT_PUBLIC_IMAGIN_API_KEY || ""
+  );
+  url.searchParams.append("make", make);
+  // get the first element from model
+  url.searchParams.append("modelFamily", model.split(" ")[0]);
+  url.searchParams.append("zoomType", "fullscreen");
+  url.searchParams.append("modelYear", `${year}`);
+  url.searchParams.append("angle", `${angle}`);
+
+  return `${url}`;
 };
